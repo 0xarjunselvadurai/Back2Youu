@@ -21,11 +21,13 @@ export default function ReturnPage() {
       if (!navigator.mediaDevices?.getUserMedia) {
         setMessage({
           type: 'error',
-          text: 'Camera not supported on this device'
+          text: '❌ Camera not supported on this device'
         });
         return;
       }
 
+      setShowScanner(true);
+      
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: 'environment',
@@ -36,32 +38,52 @@ export default function ReturnPage() {
       });
 
       streamRef.current = stream;
+      
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        setShowScanner(true);
-        setIsScannerActive(true);
+        
+        // Wait for video metadata to load
+        const playVideo = () => {
+          const playPromise = videoRef.current?.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                setIsScannerActive(true);
+                setMessage({ type: null, text: '' });
+                console.log('Camera started successfully');
+              })
+              .catch((error) => {
+                console.error('Play error:', error);
+                setMessage({
+                  type: 'error',
+                  text: '❌ Unable to play camera stream. Try again.'
+                });
+              });
+          }
+        };
 
-        const playPromise = videoRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.catch((error) => {
-            console.error('Play error:', error);
-            setMessage({
-              type: 'error',
-              text: 'Unable to play camera stream'
-            });
-          });
+        if (videoRef.current.readyState >= 2) {
+          playVideo();
+        } else {
+          videoRef.current.onloadedmetadata = playVideo;
         }
       }
     } catch (error: any) {
-      let errorMsg = 'Unable to access camera';
+      setShowScanner(false);
+      let errorMsg = '❌ Unable to access camera';
+      
       if (error.name === 'NotAllowedError') {
-        errorMsg = 'Camera permission denied. Please allow access in browser settings.';
+        errorMsg = '❌ Camera permission denied. Please allow access in settings.';
       } else if (error.name === 'NotFoundError') {
-        errorMsg = 'No camera found on this device.';
+        errorMsg = '❌ No camera found on this device.';
       } else if (error.name === 'NotReadableError') {
-        errorMsg = 'Camera is already in use. Please close other apps.';
+        errorMsg = '❌ Camera is already in use. Close other apps and try again.';
+      } else if (error.name === 'OverconstrainedError') {
+        errorMsg = '❌ Camera resolution not supported. Try again.';
       }
+      
       setMessage({ type: 'error', text: errorMsg });
+      console.error('Camera error:', error);
     }
   };
 
@@ -69,46 +91,68 @@ export default function ReturnPage() {
   const scanQRCode = () => {
     if (!isScannerActive || !videoRef.current || !canvasRef.current) return;
 
-    const canvas = canvasRef.current;
     const video = videoRef.current;
+    const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
 
-    if (!context) return;
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-    if (code) {
-      const detectedCode = code.data;
-      // Extract 8-digit number from QR code
-      const matches = detectedCode.match(/\d{8}/);
-      if (matches) {
-        const code8Digit = matches[0];
-        setTagId(code8Digit);
-        stopScanner();
-        setMessage({
-          type: 'success',
-          text: `QR code scanned! Code: ${code8Digit}`
-        });
-      }
-    } else {
-      // Continue scanning
+    if (!context || !video.videoWidth || !video.videoHeight) {
       requestAnimationFrame(scanQRCode);
+      return;
     }
+
+    // Set canvas dimensions to match video
+    if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+    }
+
+    // Draw video frame to canvas
+    try {
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+      // Scan QR code
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+      if (code && code.data) {
+        const detectedCode = code.data;
+        console.log('QR detected:', detectedCode);
+        
+        // Extract 8-digit number from QR code
+        const matches = detectedCode.match(/\d{8}/);
+        if (matches) {
+          const code8Digit = matches[0];
+          setTagId(code8Digit);
+          stopScanner();
+          setMessage({
+            type: 'success',
+            text: `✅ QR code scanned! Code: ${code8Digit}`
+          });
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('Scan error:', error);
+    }
+
+    // Continue scanning
+    requestAnimationFrame(scanQRCode);
   };
 
   // Stop camera
   const stopScanner = () => {
+    setIsScannerActive(false);
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop());
+      try {
+        streamRef.current.getTracks().forEach((track) => {
+          track.stop();
+        });
+      } catch (error) {
+        console.error('Error stopping stream:', error);
+      }
       streamRef.current = null;
     }
     setShowScanner(false);
-    setIsScannerActive(false);
   };
 
   // Start scanning when scanner is active
@@ -244,7 +288,7 @@ export default function ReturnPage() {
 
                 {/* QR Scanner Display */}
                 {showScanner && (
-                  <div className="relative w-full bg-black rounded-xl overflow-hidden border-4 border-blue-500">
+                  <div className="relative w-full bg-black rounded-xl overflow-hidden border-4 border-blue-500 shadow-2xl">
                     <video
                       ref={videoRef}
                       autoPlay
@@ -255,8 +299,7 @@ export default function ReturnPage() {
                       className="w-full h-auto object-cover"
                       style={{ 
                         WebkitPlaysinline: 'true',
-                        display: 'block',
-                        transform: 'scaleX(-1)'
+                        display: 'block'
                       } as any}
                     />
                     <canvas
@@ -264,16 +307,25 @@ export default function ReturnPage() {
                       style={{ display: 'none' }}
                     />
                     {/* Scanning Guide Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="border-4 border-yellow-400 rounded-2xl"
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/30">
+                      <div className="border-4 border-yellow-400 rounded-3xl transition-all"
                         style={{
-                          width: '80%',
-                          height: '80%',
-                          boxShadow: 'inset 0 0 20px rgba(250, 204, 21, 0.5)',
+                          width: '75%',
+                          height: '75%',
+                          boxShadow: '0 0 30px rgba(250, 204, 21, 0.6), inset 0 0 20px rgba(250, 204, 21, 0.3)',
                         }}
                       />
-                      <div className="absolute top-4 text-yellow-300 text-sm font-bold">
+                    </div>
+                    {/* Scanning Text */}
+                    <div className="absolute top-8 left-0 right-0 text-center">
+                      <div className="inline-block bg-yellow-400 text-black px-4 py-2 rounded-full font-bold text-sm shadow-lg">
                         🔍 Point camera at QR code
+                      </div>
+                    </div>
+                    {/* Loading Indicator */}
+                    <div className="absolute bottom-8 left-0 right-0 text-center">
+                      <div className="inline-block">
+                        <div className="animate-spin rounded-full h-8 w-8 border-4 border-yellow-400 border-t-transparent"></div>
                       </div>
                     </div>
                   </div>
