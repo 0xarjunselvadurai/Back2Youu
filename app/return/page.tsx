@@ -244,26 +244,38 @@ export default function ReturnPage() {
 
                 {/* QR Scanner Display */}
                 {showScanner && (
-                  <div className="relative w-full bg-black rounded-xl overflow-hidden">
+                  <div className="relative w-full bg-black rounded-xl overflow-hidden border-4 border-blue-500">
                     <video
                       ref={videoRef}
                       autoPlay
                       playsInline
                       muted
-                      className="w-full h-[clamp(250px,50vw,400px)] object-cover"
-                      style={{ WebkitPlaysinline: 'true' } as any}
+                      width={1280}
+                      height={720}
+                      className="w-full h-auto object-cover"
+                      style={{ 
+                        WebkitPlaysinline: 'true',
+                        display: 'block',
+                        transform: 'scaleX(-1)'
+                      } as any}
                     />
                     <canvas
                       ref={canvasRef}
                       style={{ display: 'none' }}
                     />
-                    <div className="absolute inset-0 border-2 border-yellow-400" style={{
-                      borderRadius: '50%',
-                      width: '80%',
-                      height: '80%',
-                      left: '10%',
-                      top: '10%'
-                    }} />
+                    {/* Scanning Guide Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="border-4 border-yellow-400 rounded-2xl"
+                        style={{
+                          width: '80%',
+                          height: '80%',
+                          boxShadow: 'inset 0 0 20px rgba(250, 204, 21, 0.5)',
+                        }}
+                      />
+                      <div className="absolute top-4 text-yellow-300 text-sm font-bold">
+                        🔍 Point camera at QR code
+                      </div>
+                    </div>
                   </div>
                 )}
 
