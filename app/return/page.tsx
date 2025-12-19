@@ -216,79 +216,72 @@ export default function ReturnPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col">
-      {/* Navbar - Responsive */}
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-[clamp(1rem,3vw,2rem)] py-[clamp(0.75rem,2vw,1rem)] flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-[clamp(0.5rem,1.5vw,0.75rem)]">
-            <div className="w-[clamp(2rem,5vw,2.5rem)] h-[clamp(2rem,5vw,2.5rem)] bg-gradient-to-br from-orange-500 to-red-500 rounded flex items-center justify-center">
-              <span className="font-bold text-white" style={{fontSize: 'clamp(0.75rem,1.5vw,1rem)'}}>LF</span>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 flex flex-col">
+      {/* Navbar - Professional */}
+      <nav className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center shadow-md">
+              <span className="font-bold text-white text-lg">B2Y</span>
             </div>
-            <span className="font-bold text-gray-800 hidden sm:inline" style={{fontSize: 'clamp(0.875rem,2vw,1.5rem)'}}>Back2You</span>
+            <span className="font-semibold text-gray-900 text-lg hidden sm:inline">Back2You</span>
           </Link>
           <Link 
             href="/"
-            className="text-gray-600 hover:text-gray-900 font-semibold transition px-[clamp(0.5rem,1vw,0.75rem)] py-[clamp(0.35rem,0.75vw,0.5rem)] bg-gray-100 rounded text-[clamp(0.65rem,1.2vw,0.875rem)] whitespace-nowrap"
+            className="text-gray-600 hover:text-gray-900 font-medium transition px-4 py-2 rounded-lg hover:bg-gray-100 text-sm"
           >
-            Back Home
+            ← Back Home
           </Link>
         </div>
       </nav>
 
-      {/* Main Content - Fully Responsive */}
-      <div className="flex-1 flex items-center justify-center px-[clamp(0.75rem,3vw,1rem)] py-[clamp(1.5rem,3vw,2rem)]">
-        <div className="w-full max-w-[clamp(280px,90vw,500px)]">
-          {/* Hero Section */}
-          <div className="text-center mb-[clamp(1.5rem,3vw,2rem)] text-white">
-            <h1 className="font-bold mb-[clamp(0.75rem,1.5vw,1rem)] leading-tight"
-              style={{fontSize: 'clamp(1.5rem,5vw,2.5rem)'}}>
-              Found an Item?
+      {/* Main Content - Professional Layout */}
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
+        <div className="w-full max-w-lg">
+          {/* Header Section */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              Return Found Item
             </h1>
-            <p className="text-gray-300" style={{fontSize: 'clamp(0.875rem,2vw,1.125rem)'}}>
-              Help reunite it with its owner
+            <p className="text-gray-600 text-lg font-light">
+              Help reunite items with their rightful owners
             </p>
           </div>
 
-          {/* Main Card */}
-          <div className="bg-white rounded-[clamp(1rem,2vw,1.5rem)] shadow-2xl overflow-hidden">
-            {/* Header */}
-            <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 p-[clamp(1.5rem,3vw,2rem)] text-white text-center">
-              <div style={{fontSize: 'clamp(2rem,6vw,3rem)'}} className="mb-[clamp(0.5rem,1vw,0.75rem)]">💝</div>
-              <h2 className="font-bold" 
-                style={{fontSize: 'clamp(1.25rem,3vw,1.875rem)'}}
-              >
-                Return This Item
-              </h2>
-              <p className="text-pink-100 mt-[clamp(0.5rem,1vw,0.75rem)]"
-                style={{fontSize: 'clamp(0.75rem,1.5vw,0.875rem)'}}
-              >
-                Your kindness matters
+          {/* Main Card - Professional White */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+            {/* Header with subtle gradient */}
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-8 text-white">
+              <div className="text-5xl mb-3">📍</div>
+              <h2 className="text-2xl font-bold mb-1">Locate Owner</h2>
+              <p className="text-blue-100 font-light">
+                Enter the unique code to notify the owner
               </p>
             </div>
 
             {/* Content */}
-            <div className="p-4 sm:p-8 space-y-4 sm:space-y-6">
-              {/* Info Box */}
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-3 sm:p-4">
-                <p className="text-xs sm:text-sm text-blue-900 leading-relaxed">
-                  Found an item with an 8-digit code? Enter it below and we'll notify the owner immediately!
+            <div className="p-8 space-y-6">
+              {/* Info Box - Subtle Blue */}
+              <div className="bg-blue-50 border-l-4 border-blue-600 rounded-lg p-4">
+                <p className="text-sm text-gray-700 leading-relaxed font-medium">
+                  📌 Found an item with an 8-digit code? Enter it below and we'll immediately notify the owner.
                 </p>
               </div>
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
-                {/* Scanner Button */}
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Scanner Button - Primary */}
                 <button
                   type="button"
                   onClick={showScanner ? stopScanner : startScanner}
-                  className="w-full px-4 sm:px-6 py-2 sm:py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-all shadow-lg text-sm sm:text-base"
+                  className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg text-base"
                 >
-                  {showScanner ? '❌ Stop Scanner' : '📱 Scan QR Code'}
+                  {showScanner ? '⏹ Stop Scanner' : '📱 Scan QR Code'}
                 </button>
 
-                {/* QR Scanner Display */}
+                {/* QR Scanner Display - Professional */}
                 {showScanner && (
-                  <div className="relative w-full bg-black rounded-xl overflow-hidden border-4 border-blue-500 shadow-2xl">
+                  <div className="relative w-full bg-black rounded-xl overflow-hidden border border-gray-300 shadow-lg">
                     <video
                       ref={videoRef}
                       autoPlay
@@ -306,34 +299,35 @@ export default function ReturnPage() {
                       ref={canvasRef}
                       style={{ display: 'none' }}
                     />
-                    {/* Scanning Guide Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/30">
-                      <div className="border-4 border-yellow-400 rounded-3xl transition-all"
+                    {/* Scanning Guide - Elegant */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/20">
+                      <div className="border-3 border-blue-400 rounded-2xl transition-all"
                         style={{
                           width: '75%',
                           height: '75%',
-                          boxShadow: '0 0 30px rgba(250, 204, 21, 0.6), inset 0 0 20px rgba(250, 204, 21, 0.3)',
+                          boxShadow: '0 0 25px rgba(59, 130, 246, 0.5), inset 0 0 15px rgba(59, 130, 246, 0.2)',
                         }}
                       />
                     </div>
-                    {/* Scanning Text */}
-                    <div className="absolute top-8 left-0 right-0 text-center">
-                      <div className="inline-block bg-yellow-400 text-black px-4 py-2 rounded-full font-bold text-sm shadow-lg">
-                        🔍 Point camera at QR code
+                    {/* Scanning Text - Centered */}
+                    <div className="absolute top-6 left-0 right-0 text-center">
+                      <div className="inline-block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold text-sm shadow-lg">
+                        🔍 Align QR code in frame
                       </div>
                     </div>
                     {/* Loading Indicator */}
-                    <div className="absolute bottom-8 left-0 right-0 text-center">
+                    <div className="absolute bottom-6 left-0 right-0 text-center">
                       <div className="inline-block">
-                        <div className="animate-spin rounded-full h-8 w-8 border-4 border-yellow-400 border-t-transparent"></div>
+                        <div className="animate-spin rounded-full h-6 w-6 border-3 border-blue-400 border-t-transparent"></div>
                       </div>
                     </div>
                   </div>
                 )}
 
+                {/* Input Field - Professional */}
                 <div>
-                  <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3">
-                    Enter the 8-Digit Code
+                  <label className="block text-sm font-semibold text-gray-800 mb-2">
+                    8-Digit Code
                   </label>
                   <input
                     type="text"
@@ -346,45 +340,50 @@ export default function ReturnPage() {
                       setMessage({ type: null, text: '' });
                     }}
                     disabled={isSubmitting}
-                    className="w-full px-3 sm:px-4 py-3 sm:py-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 text-center font-mono text-2xl sm:text-3xl font-bold transition-all disabled:bg-gray-100 text-gray-900"
+                    className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-center font-mono text-3xl font-bold transition-all disabled:bg-gray-50 disabled:text-gray-400 text-gray-900"
                   />
-                  <p className="text-xs text-gray-500 mt-1 sm:mt-2 text-right">{tagId.length}/8 digits</p>
+                  <p className="text-xs text-gray-500 mt-2 text-right font-medium">{tagId.length}/8 digits</p>
                 </div>
 
-                {/* Message Display */}
+                {/* Message Display - Professional */}
                 {message.type && (
-                  <div className={`p-3 sm:p-4 rounded-xl font-semibold text-xs sm:text-sm animate-fade-in ${
+                  <div className={`p-4 rounded-lg font-medium text-sm border-l-4 animate-fade-in ${
                     message.type === 'success' 
-                      ? 'bg-green-100 border-2 border-green-500 text-green-800' 
-                      : 'bg-red-100 border-2 border-red-500 text-red-800'
+                      ? 'bg-green-50 border-l-green-500 text-green-800' 
+                      : 'bg-red-50 border-l-red-500 text-red-800'
                   }`}>
                     {message.text}
                   </div>
                 )}
 
-                {/* Submit Button */}
+                {/* Submit Button - Primary Action */}
                 <button
                   type="submit"
                   disabled={tagId.length !== 8 || isSubmitting}
-                  className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-sm sm:text-lg"
+                  className="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg text-base"
                 >
-                  {isSubmitting ? 'Sending Email...' : 'Confirm & Notify Owner'}
+                  {isSubmitting ? '⏳ Notifying Owner...' : '✓ Confirm & Notify Owner'}
                 </button>
               </form>
 
-              {/* Support Info */}
-              <div className="bg-gray-50 border border-gray-200 rounded-xl p-3 sm:p-4 text-center">
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  Don't see a code? The item may not be registered yet. Please contact us at <span className="font-semibold">support@lostfoundguard.com</span>
+              {/* Divider */}
+              <div className="border-t border-gray-200"></div>
+
+              {/* Support Info - Footer */}
+              <div className="text-center">
+                <p className="text-xs text-gray-600 leading-relaxed font-light">
+                  No code visible? The item may not be registered. <br />
+                  <span className="font-semibold text-gray-900">Contact: support@back2you.com</span>
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Footer Info */}
-          <div className="text-center mt-6 sm:mt-8 text-gray-300">
-            <p className="text-xs sm:text-sm leading-relaxed">
-              Thank you for being kind and helping reunite lost items with their owners!
+          {/* Footer Message */}
+          <div className="text-center mt-8 text-gray-600 font-light">
+            <p className="text-sm leading-relaxed">
+              Thank you for your kindness in helping reunite<br />
+              lost items with their owners.
             </p>
           </div>
         </div>
@@ -394,7 +393,7 @@ export default function ReturnPage() {
         @keyframes fadeIn {
           from {
             opacity: 0;
-            transform: translateY(-10px);
+            transform: translateY(-8px);
           }
           to {
             opacity: 1;
