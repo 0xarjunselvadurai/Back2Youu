@@ -1,65 +1,119 @@
-import Image from "next/image";
+'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
+import Navbar from './components/Navbar';
+import { ShoppingBag, Zap, Users, Newspaper } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="min-h-screen bg-gray-50">
+      {/* Use Responsive Navbar Component */}
+      <Navbar />
+
+      {/* Hero Section - Fully Responsive */}
+      <section className="bg-white py-[clamp(3rem,10vw,5rem)] px-[clamp(1rem,3vw,2rem)]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center">
+            <h1 className="font-bold text-gray-900 mb-[clamp(1rem,2vw,1.5rem)] leading-tight"
+              style={{fontSize: 'clamp(1.75rem, 6vw, 3.5rem)'}}>
+              Recover Your Lost Items
+            </h1>
+            <p className="mb-[clamp(1.5rem,3vw,2rem)] leading-relaxed"
+              style={{fontSize: 'clamp(0.875rem, 2.5vw, 1rem)', color: '#4b5563'}}>
+              Connect with finders using NFC cards, QR codes, and 8-digit codes.<br/>Secure, fast, and reliable recovery.
+            </p>
+            <Link
+              href="/shop"
+              className="inline-block px-[clamp(1.5rem,3vw,2rem)] py-[clamp(0.75rem,2vw,1rem)] bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition"
+              style={{fontSize: 'clamp(0.875rem, 1.5vw, 1rem)'}}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              Get Started
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - Fluid Typography */}
+      <section className="bg-gray-900 text-white py-[clamp(3rem,8vw,4rem)] px-[clamp(1rem,3vw,2rem)]">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="font-bold mb-[clamp(1rem,2vw,1.5rem)]"
+            style={{fontSize: 'clamp(1.5rem, 5vw, 2.5rem)'}}>
+            Start Protecting Your Items Today
+          </h2>
+          <p className="text-gray-300 mb-[clamp(1.5rem,3vw,2rem)] max-w-2xl mx-auto"
+            style={{fontSize: 'clamp(0.875rem, 2vw, 1rem)'}}>
+            Join thousands of users who have successfully recovered their lost items with Back2You.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/register"
+            className="inline-block px-[clamp(1.5rem,3vw,2rem)] py-[clamp(0.75rem,1.5vw,1rem)] bg-white text-gray-900 font-medium rounded hover:bg-gray-100 transition"
+            style={{fontSize: 'clamp(0.875rem, 1.5vw, 1rem)'}}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            Create Account
+          </Link>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Footer - Responsive Layout */}
+      <footer className="bg-white border-t border-gray-200 py-[clamp(2rem,5vw,3rem)] px-[clamp(1rem,3vw,2rem)]">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(1.5rem,3vw,2rem)] mb-[clamp(1.5rem,2vw,2rem)]">
+            <div>
+              <h4 className="font-bold text-gray-900 mb-[clamp(0.75rem,1.5vw,1rem)]"
+                style={{fontSize: 'clamp(0.9375rem, 1.5vw, 1rem)'}}>
+                Product
+              </h4>
+              <ul className="space-y-[clamp(0.5rem,1vw,0.75rem)]"
+                style={{fontSize: 'clamp(0.8125rem, 1.25vw, 0.875rem)'}}>
+                <li><Link href="/shop" className="text-gray-600 hover:text-gray-900">Shop</Link></li>
+                <li><Link href="/how-it-works" className="text-gray-600 hover:text-gray-900">Features</Link></li>
+                <li><Link href="#" className="text-gray-600 hover:text-gray-900">Pricing</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-[clamp(0.75rem,1.5vw,1rem)]"
+                style={{fontSize: 'clamp(0.9375rem, 1.5vw, 1rem)'}}>
+                Company
+              </h4>
+              <ul className="space-y-[clamp(0.5rem,1vw,0.75rem)]"
+                style={{fontSize: 'clamp(0.8125rem, 1.25vw, 0.875rem)'}}>
+                <li><Link href="/about" className="text-gray-600 hover:text-gray-900">About</Link></li>
+                <li><Link href="/news-feed" className="text-gray-600 hover:text-gray-900">Blog</Link></li>
+                <li><Link href="#" className="text-gray-600 hover:text-gray-900">Careers</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-[clamp(0.75rem,1.5vw,1rem)]"
+                style={{fontSize: 'clamp(0.9375rem, 1.5vw, 1rem)'}}>
+                Legal
+              </h4>
+              <ul className="space-y-[clamp(0.5rem,1vw,0.75rem)]"
+                style={{fontSize: 'clamp(0.8125rem, 1.25vw, 0.875rem)'}}>
+                <li><Link href="#" className="text-gray-600 hover:text-gray-900">Privacy</Link></li>
+                <li><Link href="#" className="text-gray-600 hover:text-gray-900">Terms</Link></li>
+                <li><Link href="#" className="text-gray-600 hover:text-gray-900">Cookie Policy</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-[clamp(0.75rem,1.5vw,1rem)]"
+                style={{fontSize: 'clamp(0.9375rem, 1.5vw, 1rem)'}}>
+                Social
+              </h4>
+              <ul className="space-y-[clamp(0.5rem,1vw,0.75rem)]"
+                style={{fontSize: 'clamp(0.8125rem, 1.25vw, 0.875rem)'}}>
+                <li><Link href="#" className="text-gray-600 hover:text-gray-900">Twitter</Link></li>
+                <li><Link href="#" className="text-gray-600 hover:text-gray-900">Facebook</Link></li>
+                <li><Link href="#" className="text-gray-600 hover:text-gray-900">LinkedIn</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-gray-200 pt-[clamp(1.5rem,2vw,2rem)] text-center"
+            style={{fontSize: 'clamp(0.8125rem, 1.25vw, 0.875rem)', color: '#6b7280'}}>
+            <p>&copy; 2024 Back2You. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </main>
   );
 }
