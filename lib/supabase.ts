@@ -8,9 +8,18 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // Sign Up Function
 export const signUp = async (firstName: string, lastName: string, email: string, password: string, notificationChannel: string) => {
   try {
+    // Build a redirect URL that works for both local dev and production
+    const emailRedirectTo =
+      typeof window !== 'undefined'
+        ? `${window.location.origin}/login`
+        : 'https://back2-youu.vercel.app/login';
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo,
+      },
     });
 
     if (error) throw error;
