@@ -335,11 +335,11 @@ export default function RegisterPage() {
           {/* Footer */}
           <div className="mt-4 sm:mt-6 lg:mt-8 text-center text-xs text-gray-600">
             <p>By creating an account, you agree to our{' '}
-              <Link href="#" className="text-slate-900 hover:text-slate-700 font-medium">
+              <Link href="/terms" className="text-slate-900 hover:text-slate-700 font-medium">
                 Terms
               </Link>
               {' '}and{' '}
-              <Link href="#" className="text-slate-900 hover:text-slate-700 font-medium">
+              <Link href="/privacy" className="text-slate-900 hover:text-slate-700 font-medium">
                 Privacy Policy
               </Link>
             </p>

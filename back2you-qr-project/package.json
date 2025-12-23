@@ -1,0 +1,34 @@
+{
+  "name": "back2you-qr-project",
+  "version": "1.0.0",
+  "description": "A project for managing QR codes and tags for lost item recovery.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "QR",
+    "codes",
+    "tags",
+    "lost items",
+    "recovery"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "lucide-react": "^0.1.0",
+    "prisma": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.0.0",
+    "eslint-config-next": "^11.0.0",
+    "tailwindcss": "^2.0.0",
+    "postcss": "^8.0.0"
+  }
+}

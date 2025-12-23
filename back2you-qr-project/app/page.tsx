@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from './components/Navbar';
-import { ShoppingBag, Zap, Users, Newspaper } from 'lucide-react';
+import QRScanner from './components/QRScanner';
 
 export default function Home() {
   return (
@@ -31,6 +31,17 @@ export default function Home() {
               Get Started
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* QR Scanner Section */}
+      <section className="bg-gray-100 py-[clamp(3rem,8vw,4rem)] px-[clamp(1rem,3vw,2rem)]">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="font-bold mb-[clamp(1rem,2vw,1.5rem)]"
+            style={{fontSize: 'clamp(1.5rem, 5vw, 2.5rem)'}}>
+            Scan Your QR Code
+          </h2>
+          <QRScanner />
         </div>
       </section>
 

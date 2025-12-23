@@ -11,7 +11,7 @@ export default function NewsFeed() {
       id: 1,
       date: 'December 15, 2024',
       title: 'Back2You Reaches 10,000 Successful Recoveries',
-      excerpt: 'We celebrate a major milestone as our community successfully recovered its 10,000th item. This achievement reflects the trust and dedication of our global user base.',
+      excerpt: 'We celebrate a major milestone as our community in India successfully recovered its 10,000th item. This achievement reflects the trust and dedication of users across the country.',
       category: 'Milestone',
       image: 'bg-blue-100'
     },
@@ -34,8 +34,8 @@ export default function NewsFeed() {
     {
       id: 4,
       date: 'November 30, 2024',
-      title: 'Expansion: Back2You Now Available in 50+ Countries',
-      excerpt: 'Our platform has expanded to serve users in over 50 countries. We\'re committed to making item recovery accessible globally.',
+      title: 'Expansion: Back2You Now Available Across India',
+      excerpt: 'Our platform has expanded to serve users across India. We\'re committed to making item recovery accessible nationwide.',
       category: 'Expansion',
       image: 'bg-orange-100'
     },
@@ -43,7 +43,7 @@ export default function NewsFeed() {
       id: 5,
       date: 'November 25, 2024',
       title: 'Partnership Announcement: Integration with Major Airlines',
-      excerpt: 'We\'re excited to announce a partnership with major airlines to provide NFC cards at airport terminals worldwide.',
+      excerpt: 'We\'re excited to announce a partnership with major airlines in India to provide NFC cards at airport terminals across the country.',
       category: 'Partnership',
       image: 'bg-pink-100'
     },
@@ -145,15 +145,8 @@ export default function NewsFeed() {
             <div>
               <h4 className="font-bold text-gray-900 mb-4">Legal</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li><Link href="#" className="hover:text-gray-900">Privacy</Link></li>
-                <li><Link href="#" className="hover:text-gray-900">Terms</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-gray-900 mb-4">Social</h4>
-              <ul className="space-y-2 text-sm text-gray-600">
-                <li><Link href="#" className="hover:text-gray-900">Twitter</Link></li>
-                <li><Link href="#" className="hover:text-gray-900">Facebook</Link></li>
+                <li><Link href="/privacy" className="hover:text-gray-900">Privacy</Link></li>
+                <li><Link href="/terms" className="hover:text-gray-900">Terms</Link></li>
               </ul>
             </div>
           </div>

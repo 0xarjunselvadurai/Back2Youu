@@ -110,8 +110,8 @@ export default function HowItWorks() {
                 <p className="text-gray-600">Our system works around the clock to help you recover your lost items anytime, anywhere.</p>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Global Network</h3>
-                <p className="text-gray-600">Connect with a worldwide community of users dedicated to helping each other recover valuables.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">India-wide Network</h3>
+                <p className="text-gray-600">Connect with a community of users across India dedicated to helping each other recover valuables.</p>
               </div>
             </div>
           </div>
@@ -150,15 +150,8 @@ export default function HowItWorks() {
             <div>
               <h4 className="font-bold text-gray-900 mb-4">Legal</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li><Link href="#" className="hover:text-gray-900">Privacy</Link></li>
-                <li><Link href="#" className="hover:text-gray-900">Terms</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-gray-900 mb-4">Social</h4>
-              <ul className="space-y-2 text-sm text-gray-600">
-                <li><Link href="#" className="hover:text-gray-900">Twitter</Link></li>
-                <li><Link href="#" className="hover:text-gray-900">Facebook</Link></li>
+                <li><Link href="/privacy" className="hover:text-gray-900">Privacy</Link></li>
+                <li><Link href="/terms" className="hover:text-gray-900">Terms</Link></li>
               </ul>
             </div>
           </div>

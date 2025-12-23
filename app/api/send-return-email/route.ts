@@ -75,9 +75,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { 
         success: true, 
-        message: 'Email sent successfully to owner',
+        message: 'Owner details fetched successfully',
         ownerName: `${owner.user_fname} ${owner.user_lname}`,
-        ownerEmail: owner.user_email
+        ownerEmail: owner.user_email,
+        tagCategory: items.tag_category,
+        tagDescription: items.tag_description
       },
       { status: 200 }
     );

@@ -1,0 +1,15 @@
+model Tag {
+  id          Int      @id @default(autoincrement())
+  tag_number  String   @unique
+  user_id     Int
+  tag_activate Boolean  @default(false)
+  category    String
+  description String
+}
+
+model QRCode {
+  id        Int      @id @default(autoincrement())
+  qr_id     String   @unique
+  tag       Tag      @relation(fields: [tagId], references: [id])
+  tagId     Int
+}

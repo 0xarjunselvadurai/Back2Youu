@@ -86,7 +86,7 @@ export default function LoginPage() {
             </li>
             <li className="flex items-center gap-3">
               <span className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center text-sm">✓</span>
-              <span>Global Coverage</span>
+              <span>Pan-India Coverage</span>
             </li>
           </ul>
         </div>
@@ -205,11 +205,11 @@ export default function LoginPage() {
           {/* Footer */}
           <div className="mt-6 sm:mt-8 text-center text-xs text-gray-600">
             <p>By signing in, you agree to our{' '}
-              <Link href="#" className="text-slate-900 hover:text-slate-700 font-medium">
+              <Link href="/terms" className="text-slate-900 hover:text-slate-700 font-medium">
                 Terms
               </Link>
               {' '}and{' '}
-              <Link href="#" className="text-slate-900 hover:text-slate-700 font-medium">
+              <Link href="/privacy" className="text-slate-900 hover:text-slate-700 font-medium">
                 Privacy Policy
               </Link>
             </p>

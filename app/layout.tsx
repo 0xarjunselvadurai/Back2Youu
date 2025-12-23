@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LostFound Guard - Recover Your Lost Items",
+  title: "Back2You - Recover Your Lost Items",
   description: "Connect with finders through NFC cards, QR codes, and 8-digit codes. 70% recovery rate with 24/7 instant alerts.",
   icons: {
     icon: '/findIT-Logo.png',

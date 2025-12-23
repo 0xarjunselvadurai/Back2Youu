@@ -29,8 +29,8 @@ export default function About() {
               <Heart className="w-12 h-12 text-gray-900 mb-4" />
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
               <p className="text-gray-600">
-                To provide a secure, efficient, and reliable platform that helps people recover their lost items and connects them with honest finders worldwide.
-              </p>
+              To provide a secure, efficient, and reliable platform that helps people in India recover their lost items and connects them with honest finders across the country.
+            </p>
             </div>
 
             <div className="bg-white rounded-lg shadow-lg p-8">
@@ -71,8 +71,8 @@ export default function About() {
             </p>
 
             <p>
-              Thousands of items have been successfully recovered through our platform, and we're just getting started. Our global community of honest finders and cautious owners is growing every day.
-            </p>
+            Thousands of items have been successfully recovered through our platform, and we're just getting started. Our community of honest finders and cautious owners across India is growing every day.
+          </p>
           </div>
         </div>
       </section>
@@ -90,9 +90,9 @@ export default function About() {
               <p className="text-gray-300">Platform Availability</p>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">Global</div>
-              <p className="text-gray-300">Coverage Worldwide</p>
-            </div>
+            <div className="text-4xl font-bold mb-2">India</div>
+            <p className="text-gray-300">Coverage Across India</p>
+          </div>
           </div>
         </div>
       </section>
@@ -102,8 +102,8 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Join Our Community</h2>
           <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            Be part of a global movement dedicated to helping each other recover what matters most.
-          </p>
+          Be part of a nationwide movement in India dedicated to helping each other recover what matters most.
+        </p>
           <Link href="/register" className="inline-block px-8 py-3 bg-gray-900 text-white font-medium rounded hover:bg-gray-800">
             Get Started Today
           </Link>
@@ -131,15 +131,8 @@ export default function About() {
             <div>
               <h4 className="font-bold text-gray-900 mb-4">Legal</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li><Link href="#" className="hover:text-gray-900">Privacy</Link></li>
-                <li><Link href="#" className="hover:text-gray-900">Terms</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-gray-900 mb-4">Social</h4>
-              <ul className="space-y-2 text-sm text-gray-600">
-                <li><Link href="#" className="hover:text-gray-900">Twitter</Link></li>
-                <li><Link href="#" className="hover:text-gray-900">Facebook</Link></li>
+                <li><Link href="/privacy" className="hover:text-gray-900">Privacy</Link></li>
+                <li><Link href="/terms" className="hover:text-gray-900">Terms</Link></li>
               </ul>
             </div>
           </div>

@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
+import { supabase, signOut } from '@/lib/supabase';
 
 interface UserProfile {
   user_fname: string;
@@ -14,6 +15,8 @@ interface UserProfile {
 export default function Navbar() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     // Retrieve user profile from localStorage
@@ -26,11 +29,27 @@ export default function Navbar() {
         console.error('Failed to parse stored profile:', e);
       }
     }
+    
+    // Also check Supabase auth session so we can show Activate
+    const checkSession = async () => {
+      try {
+        const { data } = await supabase.auth.getSession();
+        setIsAuthenticated(!!data.session);
+      } catch (error) {
+        console.error('Error checking session in Navbar:', error);
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkSession();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // Clear local profile and Supabase session
     localStorage.removeItem('userProfile');
     setUserProfile(null);
+    setIsAuthenticated(false);
+    await signOut();
     setMobileMenuOpen(false);
   };
 
@@ -38,42 +57,74 @@ export default function Navbar() {
     <nav className="bg-white sticky top-0 z-50 shadow-sm">
       <div className="w-full px-[clamp(0.75rem,3vw,2rem)]">
         <div className="flex justify-between items-center py-[clamp(0.75rem,2vw,1rem)]">
-          {/* Logo - Fluid Sizing */}
+          {/* Logo - Text Brand */}
           <Link href="/" className="flex-shrink-0">
-            <Image 
-              src="/finit.png" 
-              alt="findit logo" 
-              width={120} 
-              height={40}
-              className="h-[clamp(2rem,6vw,2.5rem)] w-auto"
-              priority
-            />
+            <span className="font-bold tracking-tight text-gray-900" style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.6rem)' }}>
+              Back2You
+            </span>
           </Link>
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-[clamp(1rem,3vw,2rem)]">
-            <Link href="/" className="text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.75rem,2vw,0.875rem)]">
+            <Link
+              href="/"
+              className={`px-3 py-1 rounded-full font-medium transition text-[clamp(0.75rem,2vw,0.875rem)] ${
+                pathname === '/'
+                  ? 'text-blue-700 bg-blue-50 shadow-sm'
+                  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+              }`}
+            >
               Home
             </Link>
-            <Link href="/shop" className="text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.75rem,2vw,0.875rem)]">
+            <Link
+              href="/shop"
+              className={`px-3 py-1 rounded-full font-medium transition text-[clamp(0.75rem,2vw,0.875rem)] ${
+                pathname === '/shop'
+                  ? 'text-blue-700 bg-blue-50 shadow-sm'
+                  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+              }`}
+            >
               Shop
             </Link>
-            <Link href="/how-it-works" className="text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.75rem,2vw,0.875rem)]">
+            <Link
+              href="/how-it-works"
+              className={`px-3 py-1 rounded-full font-medium transition text-[clamp(0.75rem,2vw,0.875rem)] ${
+                pathname === '/how-it-works'
+                  ? 'text-blue-700 bg-blue-50 shadow-sm'
+                  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+              }`}
+            >
               How It Works
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.75rem,2vw,0.875rem)]">
+            <Link
+              href="/about"
+              className={`px-3 py-1 rounded-full font-medium transition text-[clamp(0.75rem,2vw,0.875rem)] ${
+                pathname === '/about'
+                  ? 'text-blue-700 bg-blue-50 shadow-sm'
+                  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+              }`}
+            >
               About Us
             </Link>
-            <Link href="/news-feed" className="text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.75rem,2vw,0.875rem)]">
+            <Link
+              href="/news-feed"
+              className={`px-3 py-1 rounded-full font-medium transition text-[clamp(0.75rem,2vw,0.875rem)] ${
+                pathname === '/news-feed'
+                  ? 'text-blue-700 bg-blue-50 shadow-sm'
+                  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+              }`}
+            >
               News Feed
             </Link>
           </div>
 
           {/* Desktop Action Buttons */}
           <div className="hidden lg:flex items-center gap-[clamp(0.5rem,2vw,1rem)]">
-            <Link href="/active" className="px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.75rem)] bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-[clamp(0.7rem,1.5vw,0.875rem)]">
-              Active
-            </Link>
+            {isAuthenticated && (
+              <Link href="/active" className="px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.75rem)] bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-[clamp(0.7rem,1.5vw,0.875rem)]">
+                Activate
+              </Link>
+            )}
             <Link href="/return" className="px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.75rem)] bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition text-[clamp(0.7rem,1.5vw,0.875rem)]">
               Return
             </Link>
@@ -102,33 +153,8 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile Action Buttons - Smaller width on mobile */}
-          <div className="lg:hidden flex items-center gap-[clamp(0.35rem,1vw,0.5rem)]">
-            <Link href="/active" className="px-[clamp(0.4rem,1vw,0.6rem)] py-[clamp(0.4rem,0.8vw,0.5rem)] bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-[clamp(0.65rem,1.2vw,0.75rem)] whitespace-nowrap">
-              Active
-            </Link>
-            <Link href="/return" className="px-[clamp(0.4rem,1vw,0.6rem)] py-[clamp(0.4rem,0.8vw,0.5rem)] bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition text-[clamp(0.65rem,1.2vw,0.75rem)] whitespace-nowrap">
-              Return
-            </Link>
-            
-            {userProfile ? (
-              <button 
-                onClick={handleLogout}
-                className="px-[clamp(0.4rem,1vw,0.6rem)] py-[clamp(0.4rem,0.8vw,0.5rem)] bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition text-[clamp(0.65rem,1.2vw,0.75rem)] whitespace-nowrap"
-              >
-                Logout
-              </button>
-            ) : (
-              <>
-                <Link href="/login" className="px-[clamp(0.4rem,1vw,0.6rem)] py-[clamp(0.4rem,0.8vw,0.5rem)] text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.65rem,1.2vw,0.75rem)] whitespace-nowrap">
-                  Login
-                </Link>
-                <Link href="/register" className="px-[clamp(0.4rem,1vw,0.6rem)] py-[clamp(0.4rem,0.8vw,0.5rem)] bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 transition text-[clamp(0.65rem,1.2vw,0.75rem)] whitespace-nowrap">
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
+          {/* Mobile: main actions live inside the slide-out menu, so we only show the hamburger here */}
+          <div className="lg:hidden flex items-center gap-[clamp(0.35rem,1vw,0.5rem)]" />
 
           {/* Mobile Menu Button */}
           <button 
@@ -146,45 +172,103 @@ export default function Navbar() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="lg:hidden border-t border-gray-200 bg-white">
-            <div className="px-[clamp(0.75rem,3vw,2rem)] py-[clamp(1rem,2vw,1.5rem)] space-y-[clamp(0.5rem,2vw,1rem)]">
+            <div className="px-[clamp(0.75rem,3vw,2rem)] py-[clamp(1rem,2vw,1.5rem)] space-y-[clamp(0.5rem,2vw,1rem)] text-right">
               {/* Mobile Links */}
-              <Link href="/" className="block text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.875rem,2.5vw,1rem)]" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/"
+                className={`block rounded-md px-2 py-1 font-medium transition text-[clamp(0.875rem,2.5vw,1rem)] ml-auto ${
+                  pathname === '/'
+                    ? 'text-blue-700 bg-blue-50'
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Home
               </Link>
-              <Link href="/shop" className="block text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.875rem,2.5vw,1rem)]" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/shop"
+                className={`block rounded-md px-2 py-1 font-medium transition text-[clamp(0.875rem,2.5vw,1rem)] ml-auto ${
+                  pathname === '/shop'
+                    ? 'text-blue-700 bg-blue-50'
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Shop
               </Link>
-              <Link href="/how-it-works" className="block text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.875rem,2.5vw,1rem)]" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/how-it-works"
+                className={`block rounded-md px-2 py-1 font-medium transition text-[clamp(0.875rem,2.5vw,1rem)] ml-auto ${
+                  pathname === '/how-it-works'
+                    ? 'text-blue-700 bg-blue-50'
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 How It Works
               </Link>
-              <Link href="/about" className="block text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.875rem,2.5vw,1rem)]" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/about"
+                className={`block rounded-md px-2 py-1 font-medium transition text-[clamp(0.875rem,2.5vw,1rem)] ml-auto ${
+                  pathname === '/about'
+                    ? 'text-blue-700 bg-blue-50'
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 About Us
               </Link>
-              <Link href="/news-feed" className="block text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.875rem,2.5vw,1rem)]" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/news-feed"
+                className={`block rounded-md px-2 py-1 font-medium transition text-[clamp(0.875rem,2.5vw,1rem)] ml-auto ${
+                  pathname === '/news-feed'
+                    ? 'text-blue-700 bg-blue-50'
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 News Feed
               </Link>
 
-              <div className="border-t border-gray-200 pt-[clamp(0.75rem,2vw,1rem)] space-y-[clamp(0.5rem,1.5vw,0.75rem)]">
-                <Link href="/active" className="block w-full px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.75rem)] bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-center text-[clamp(0.75rem,2vw,0.875rem)]" onClick={() => setMobileMenuOpen(false)}>
-                  Active Items
-                </Link>
-                <Link href="/return" className="block w-full px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.75rem)] bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition text-center text-[clamp(0.75rem,2vw,0.875rem)]" onClick={() => setMobileMenuOpen(false)}>
-                  Return Item
+              <div className="border-t border-gray-200 pt-[clamp(0.5rem,1.5vw,0.75rem)] space-y-[clamp(0.35rem,1vw,0.5rem)] flex flex-wrap gap-2 justify-end">
+                {isAuthenticated && (
+                  <Link
+                    href="/active"
+                    className="inline-flex px-3 py-1.5 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition text-[clamp(0.7rem,1.8vw,0.8rem)] whitespace-nowrap"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Activate
+                  </Link>
+                )}
+                <Link
+                  href="/return"
+                  className="inline-flex px-3 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-md font-semibold hover:from-purple-600 hover:to-pink-600 transition text-[clamp(0.7rem,1.8vw,0.8rem)] whitespace-nowrap"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Return
                 </Link>
 
                 {userProfile ? (
-                  <button 
+                  <button
                     onClick={handleLogout}
-                    className="w-full px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.75rem)] bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition text-[clamp(0.75rem,2vw,0.875rem)]"
+                    className="inline-flex px-3 py-1.5 bg-red-600 text-white rounded-md font-semibold hover:bg-red-700 transition text-[clamp(0.7rem,1.8vw,0.8rem)] whitespace-nowrap"
                   >
                     Logout
                   </button>
                 ) : (
                   <>
-                    <Link href="/login" className="block w-full px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.75rem)] text-center text-gray-700 hover:text-gray-900 font-medium transition text-[clamp(0.75rem,2vw,0.875rem)]" onClick={() => setMobileMenuOpen(false)}>
+                    <Link
+                      href="/login"
+                      className="inline-flex px-3 py-1.5 text-gray-700 hover:text-gray-900 border border-gray-300 rounded-md font-medium transition text-[clamp(0.7rem,1.8vw,0.8rem)] whitespace-nowrap"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
                       Login
                     </Link>
-                    <Link href="/register" className="block w-full px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.75rem)] bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 transition text-center text-[clamp(0.75rem,2vw,0.875rem)]" onClick={() => setMobileMenuOpen(false)}>
+                    <Link
+                      href="/register"
+                      className="inline-flex px-3 py-1.5 bg-gray-900 text-white rounded-md font-semibold hover:bg-gray-800 transition text-[clamp(0.7rem,1.8vw,0.8rem)] whitespace-nowrap"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
                       Sign Up
                     </Link>
                   </>

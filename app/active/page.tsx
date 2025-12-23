@@ -24,6 +24,7 @@ export default function Active() {
     description: ''
   });
   const [userItems, setUserItems] = useState<any[]>([]);
+  const [itemStatus, setItemStatus] = useState<{ [key: string]: boolean }>({});
   const [isLoadingItems, setIsLoadingItems] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
@@ -99,6 +100,12 @@ export default function Active() {
 
       console.log('Items fetched for user:', userId, data);
       setUserItems(data || []);
+      // Initialize all items as active (true)
+      const initialStatus: { [key: string]: boolean } = {};
+      (data || []).forEach((item: any, index: number) => {
+        initialStatus[item.tag_id] = true;
+      });
+      setItemStatus(initialStatus);
       setShowItemsModal(true);
     } catch (error) {
       console.error('Error:', error);
@@ -396,9 +403,9 @@ export default function Active() {
                   <p className="text-gray-700" style={{fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)'}}>Instant notifications</p>
                 </div>
                 <div className="bg-gradient-to-br from-green-50 to-green-100/50 p-[clamp(1rem,2vw,1.5rem)] rounded-xl border border-green-200 hover:border-green-300 transition-colors shadow-sm hover:shadow-md">
-                  <h3 className="font-bold text-gray-900 mb-1" style={{fontSize: 'clamp(0.875rem, 1.5vw, 1rem)'}}>Global Reach</h3>
-                  <p className="text-gray-700" style={{fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)'}}>Connect worldwide</p>
-                </div>
+                <h3 className="font-bold text-gray-900 mb-1" style={{fontSize: 'clamp(0.875rem, 1.5vw, 1rem)'}}>Pan-India Reach</h3>
+                <p className="text-gray-700" style={{fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)'}}>Connect across India</p>
+              </div>
                 <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 p-[clamp(1rem,2vw,1.5rem)] rounded-xl border border-purple-200 hover:border-purple-300 transition-colors shadow-sm hover:shadow-md">
                   <h3 className="font-bold text-gray-900 mb-1" style={{fontSize: 'clamp(0.875rem, 1.5vw, 1rem)'}}>Secure</h3>
                   <p className="text-gray-700" style={{fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)'}}>Protected transactions</p>
@@ -442,19 +449,8 @@ export default function Active() {
               </h4>
               <ul className="space-y-[clamp(0.5rem,1vw,0.75rem)]"
                 style={{fontSize: 'clamp(0.8125rem, 1.25vw, 0.875rem)'}}>
-                <li><Link href="#" className="text-gray-600 hover:text-gray-900">Privacy</Link></li>
-                <li><Link href="#" className="text-gray-600 hover:text-gray-900">Terms</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-gray-900 mb-[clamp(0.75rem,1.5vw,1rem)]"
-                style={{fontSize: 'clamp(0.9375rem, 1.5vw, 1rem)'}}>
-                Social
-              </h4>
-              <ul className="space-y-[clamp(0.5rem,1vw,0.75rem)]"
-                style={{fontSize: 'clamp(0.8125rem, 1.25vw, 0.875rem)'}}>
-                <li><Link href="#" className="text-gray-600 hover:text-gray-900">Twitter</Link></li>
-                <li><Link href="#" className="text-gray-600 hover:text-gray-900">Facebook</Link></li>
+                <li><Link href="/privacy" className="text-gray-600 hover:text-gray-900">Privacy</Link></li>
+                <li><Link href="/terms" className="text-gray-600 hover:text-gray-900">Terms</Link></li>
               </ul>
             </div>
           </div>
@@ -503,16 +499,55 @@ export default function Active() {
                 </div>
               ) : (
                 <div className="space-y-[clamp(0.75rem,1.5vw,1rem)]">
-                  {userItems.map((item: any, index: number) => (
-                    <div key={index} className="bg-gradient-to-r from-gray-50 to-gray-100 border-2 border-gray-200 rounded-xl p-[clamp(1rem,2vw,1.5rem)] hover:border-green-300 transition-colors">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-[clamp(0.75rem,1.5vw,1rem)]">
-                        <div>
-                          <p className="text-gray-600 font-semibold mb-1" style={{fontSize: 'clamp(0.7rem, 1vw, 0.8125rem)'}}>TAG ID</p>
-                          <p className="font-mono font-bold text-gray-900" style={{fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)'}}>{item.tag_id}</p>
+                  {userItems.map((item: any, index: number) => {
+                    const isActive = itemStatus[item.tag_id] !== false;
+                    return (
+                    <div key={index} className={`bg-gradient-to-r border-2 rounded-xl p-[clamp(1rem,2vw,1.5rem)] transition-all ${
+                      isActive 
+                        ? 'from-green-50 to-green-100 border-green-300 shadow-md' 
+                        : 'from-gray-100 to-gray-200 border-gray-400 shadow-sm opacity-70'
+                    }`}>
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-[clamp(0.75rem,1.5vw,1rem)]">
+                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-[clamp(0.75rem,1.5vw,1rem)] w-full">
+                          <div>
+                            <p className="text-gray-600 font-semibold mb-1" style={{fontSize: 'clamp(0.7rem, 1vw, 0.8125rem)'}}>TAG ID</p>
+                            <p className="font-mono font-bold text-gray-900" style={{fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)'}}>{item.tag_id}</p>
+                          </div>
+                          <div>
+                            <p className="text-gray-600 font-semibold mb-1" style={{fontSize: 'clamp(0.7rem, 1vw, 0.8125rem)'}}>CATEGORY</p>
+                            <p className={`font-bold capitalize ${
+                              isActive ? 'text-green-600' : 'text-gray-500'
+                            }`} style={{fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)'}}>{item.tag_category}</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-gray-600 font-semibold mb-1" style={{fontSize: 'clamp(0.7rem, 1vw, 0.8125rem)'}}>CATEGORY</p>
-                          <p className="font-bold text-green-600 capitalize" style={{fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)'}}>{item.tag_category}</p>
+                        {/* Tiny ON/OFF Toggle (extra small, rounded) */}
+                        <div className="inline-flex items-center gap-0.5 text-[9px] leading-none">
+                          <button
+                            onClick={() => setItemStatus(prev => ({
+                              ...prev,
+                              [item.tag_id]: true
+                            }))}
+                            className={`px-1 py-0.5 rounded-full border transition-colors duration-150 ${
+                              isActive
+                                ? 'bg-green-500 border-green-500 text-white'
+                                : 'bg-white border-gray-300 text-gray-600'
+                            }`}
+                          >
+                            ON
+                          </button>
+                          <button
+                            onClick={() => setItemStatus(prev => ({
+                              ...prev,
+                              [item.tag_id]: false
+                            }))}
+                            className={`px-1 py-0.5 rounded-full border transition-colors duration-150 ${
+                              !isActive
+                                ? 'bg-red-500 border-red-500 text-white'
+                                : 'bg-white border-gray-300 text-gray-600'
+                            }`}
+                          >
+                            OFF
+                          </button>
                         </div>
                       </div>
                       {item.tag_description && (
@@ -523,11 +558,12 @@ export default function Active() {
                       )}
                       {item.created_at && (
                         <div className="mt-1" style={{fontSize: 'clamp(0.6875rem, 1vw, 0.75rem)', color: '#6b7280'}}>
-                          Added on: {new Date(item.created_at).toLocaleDateString()}
+                          Added on: {new Date(item.created_at).toLocaleDateString()} {isActive ? '✓ Active' : '⊘ Inactive'}
                         </div>
                       )}
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
 
@@ -574,55 +610,7 @@ export default function Active() {
 
             {/* Modal Content */}
             <div className="p-[clamp(1rem,2vw,2rem)] space-y-[clamp(1rem,2vw,1.5rem)]">
-              {/* Scan/Enter Option */}
-              {!showCamera ? (
-                <div className="bg-gradient-to-r from-orange-50 to-red-50 p-[clamp(1rem,2vw,1.5rem)] rounded-2xl border-2 border-orange-200">
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-[clamp(1rem,2vw,1.5rem)]">
-                    <div className="flex-1 w-full">
-                      <p className="text-gray-600 mb-[clamp(0.75rem,1.5vw,1rem)]" style={{fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)'}}>Quick scan or manual entry</p>
-                      <button
-                        onClick={startCamera}
-                        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-[clamp(0.75rem,1.5vw,0.875rem)] px-[clamp(1rem,2vw,1.5rem)] rounded-xl flex items-center gap-2 transition-all transform hover:scale-105 shadow-lg w-full justify-center"
-                        style={{fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)'}}
-                      >
-                        <span>SCAN TAG</span>
-                      </button>
-                    </div>
-                    <div className="text-right hidden sm:block">
-                      <p className="text-xs text-gray-500 mb-1">or</p>
-                      <span className="text-gray-600 font-medium" style={{fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)'}}>Enter below</span>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-[clamp(0.75rem,1.5vw,1rem)]">
-                  <div className="bg-black rounded-2xl overflow-hidden border-4 border-gray-200 shadow-xl">
-                    <video
-                      ref={videoRef}
-                      autoPlay
-                      playsInline
-                      muted
-                      controls={false}
-                      width={1280}
-                      height={720}
-                      className="w-full h-[clamp(250px,50vw,400px)] bg-black"
-                      style={{ objectFit: 'cover', display: 'block', WebkitPlaysinline: true } as any}
-                    />
-                  </div>
-                  {cameraError && (
-                    <div className="text-red-700 text-sm bg-red-100 border-2 border-red-300 p-[clamp(0.75rem,1.5vw,1rem)] rounded-xl" style={{fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)'}}>
-                      <span className="font-semibold">Camera Error:</span> {cameraError}
-                    </div>
-                  )}
-                  <button
-                    onClick={stopCamera}
-                    className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-[clamp(0.5rem,1.5vw,0.75rem)] px-4 rounded-xl transition-colors"
-                    style={{fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)'}}
-                  >
-                    Close Camera
-                  </button>
-                </div>
-              )}
+              {/* Scan option removed: only manual entry below */}
 
               {/* Tag ID Input */}
               <div>
